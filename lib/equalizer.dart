@@ -110,14 +110,15 @@ class Equalizer {
       duration: duration,
     );
 
-    var centerFreqs =
-        await (Equalizer.getCenterBandFreqs() as FutureOr<List<int>>);
-    var bandLevelRange =
-        await (Equalizer.getBandLevelRange() as FutureOr<List<int>>);
+    var centerFreqs = await Equalizer.getCenterBandFreqs();
+    centerFreqs = centerFreqs ?? [];
+
+    var bandLevelRange = await Equalizer.getBandLevelRange();
+    bandLevelRange = bandLevelRange ?? [];
     var min = -((bandLevelRange[0].abs() / 100) * cutOffPercentage);
 
     List<IntTween> tweens = await Future.wait(centerFreqs.map((item) async {
-      var index = centerFreqs.indexOf(item);
+      var index = centerFreqs!.indexOf(item);
       var freq = (item ~/ 1000);
 
       var nextFreq =
